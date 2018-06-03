@@ -1,6 +1,10 @@
 import requests
 import datetime
 
+
+"""
+Based on https://developer.swedbank.com/admin/app/api-explorer
+"""
 class PSD2SwedbankAPIBase:
     API_VERSION = 'v1'
     endpoint = 'https://psd2.api.swedbank.com/sandbox/%s/' % API_VERSION
@@ -32,7 +36,7 @@ class PSD2SwedbankAPIBase:
         elif type == 'post':
             r = requests.post(self.endpoint + '/'+ req, data={}, headers=headers_fin, params=params_fin)
         else:
-            assert 'Unknown request type (get, post allowed)'
+            raise AssertionError('Unknown request type (get, post allowed)')
         print('%s made request to to: %s' % (self.__class__.__name__, r.url))
         return r
 
