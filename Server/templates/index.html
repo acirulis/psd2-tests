@@ -1,9 +1,32 @@
 {%extends "layout.html" %}
 
 {%block content %}
-    <h1>Welcome BS4 / PSD2</h1>
-    <p>
-        Key: {{key}}
-    </p>
+<h1>Welcome to great fintech app</h1>
+<p>
+    This application uses uses PSD2 based access to commercial banks and implements (Sandbox mode) both major PSD
+    interfaces -
+    Account Information Services (AISP) and Payment Initiation Services (PISP).
+</p>
+<p>
+    Flow for each bank consists (or should consist, based on API completeness) on following steps:
+</p>
+<ul>
+    <li>Authentication - secure two factor authentication to bank of customers choosing</li>
+    <li>Consent - customer's permission to use particular services</li>
+    <li>AISP - get list of accounts (checking accounts only)</li>
+    <li>AISP - get information on particular account</li>
+    <li>AISP - get transaction list for particular account</li>
+    <li>PISP - initiate payment on customer's behalf</li>
+</ul>
+
+
+<div class="row">
+    {% for bank in banks %}
+    <div class="col">
+        {%include "blocks/bank_card.html" %}
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
 
