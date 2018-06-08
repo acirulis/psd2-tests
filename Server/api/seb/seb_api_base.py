@@ -1,5 +1,6 @@
 import requests
 import datetime
+import os
 
 """
 Based on https://developer.swedbank.com/admin/app/api-explorer
@@ -34,12 +35,14 @@ class PSD2SEBAPIBase:
             add_params = {}
         headers_fin = {**headers, **add_headers}
         params_fin = {**params, **add_params}
+        private_key_file = os.path.join(os.path.dirname(__file__), 'client.key')
+        cert_file = os.path.join(os.path.dirname(__file__), 'client.crt')
         if type == 'get':
             r = requests.get(self.endpoint + '/' + req, data={}, headers=headers_fin, params=params_fin, verify=False,
-                             cert=('client.crt', 'client.key'))
+                             cert=(cert_file, private_key_file))
         elif type == 'post':
             r = requests.post(self.endpoint + '/' + req, data={}, headers=headers_fin, params=params_fin,
-                              cert=('client.crt', 'client.key'))
+                              cert=(cert_file, private_key_file))
         else:
             raise AssertionError('Unknown request type (get, post allowed)')
         print('%s made request to to: %s' % (self.__class__.__name__, r.url))

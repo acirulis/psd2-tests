@@ -1,6 +1,7 @@
 from flask import Flask
 from controllers import *
 import sys
+import os
 
 application = Flask(__name__, static_folder='assets')
 application.jinja_env.autoescape = False
@@ -14,8 +15,20 @@ for module in modules:
         url = '' if mod == 'frontpage' else mod  # exception for index page - does not have extra url
         application.register_blueprint(getattr(sys.modules['controllers.' + mod], mod), url_prefix='/' + url)
 
-# application.register_blueprint(frontpage.frontpage, url_prefix='/')
+
 # application.register_blueprint(login.login, url_prefix='/login')
+
+@application.template_filter('autoversion')
+def autoversion_filter(filename):
+    # determining fullpath might be project specific
+    fullpath = os.path.join('.', filename[1:])
+    try:
+        timestamp = str(os.path.getmtime(fullpath))
+    except OSError:
+        return filename
+    newfilename = "{0}?v={1}".format(filename, timestamp)
+    return newfilename
+
 
 if __name__ == "__main__":
     application.run(host='178.62.77.129', port=8080, debug=True, threaded=True)
