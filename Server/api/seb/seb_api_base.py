@@ -1,7 +1,7 @@
 import requests
 import datetime
 import os
-
+from logger import Logger
 """
 Based on https://developer.swedbank.com/admin/app/api-explorer
 """
@@ -13,6 +13,7 @@ class PSD2SEBAPIBase:
 
     request_date = ''
     BIC = ''  # Bank Identifier Code
+    logger = 0
 
     def __init__(self, api_type=''):
         self.endpoint += api_type
@@ -45,5 +46,5 @@ class PSD2SEBAPIBase:
                               cert=(cert_file, private_key_file))
         else:
             raise AssertionError('Unknown request type (get, post allowed)')
-        print('%s made request to to: %s' % (self.__class__.__name__, r.url))
+        Logger.info('%s made request to to: %s' % (self.__class__.__name__, r.url))
         return r

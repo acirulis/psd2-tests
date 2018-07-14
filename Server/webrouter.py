@@ -2,7 +2,9 @@ from flask import Flask
 from controllers import *
 import sys
 import os
+from logger import Logger
 
+# CREATE MAIN APPLICATION #
 application = Flask(__name__, static_folder='assets')
 application.jinja_env.autoescape = False
 
@@ -21,13 +23,13 @@ for module in modules:
 @application.template_filter('autoversion')
 def autoversion_filter(filename):
     # determining fullpath might be project specific
-    fullpath = os.path.join('.', filename[1:])
+    full_path = os.path.join('.', filename[1:])
     try:
-        timestamp = str(os.path.getmtime(fullpath))
+        timestamp = str(os.path.getmtime(full_path))
     except OSError:
         return filename
-    newfilename = "{0}?v={1}".format(filename, timestamp)
-    return newfilename
+    new_filename = "{0}?v={1}".format(filename, timestamp)
+    return new_filename
 
 
 if __name__ == "__main__":
